@@ -10,6 +10,7 @@ import { jwtConfig } from 'src/config/jwt.config';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { AuthResponseDto } from './dtos/auth-response.dto';
+import { CryptUtil } from 'src/common/utils/crypt.util';
 
 @Injectable()
 export class AuthService {
@@ -40,5 +41,36 @@ export class AuthService {
     );
 
     return new AuthResponseDto(accessToken);
+  }
+
+  public async validateUser(
+    email: string,
+    password: string,
+  ): Promise<UserDto | null> {
+    const user = await this.validateUserPassword(email, password);
+
+    if (!user || !user.active) null;
+
+    return user;
+  }
+
+  private async validateUserPassword(
+    email: string,
+    password: string,
+  ): Promise<UserDto | null> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (
+      user &&
+      (await CryptUtil.validatePassword(password, user.password, user.salt))
+    ) {
+      return plainToInstance(UserDto, user);
+    }
+
+    return null;
   }
 }
