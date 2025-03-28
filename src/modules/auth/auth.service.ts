@@ -54,6 +54,14 @@ export class AuthService {
     return user;
   }
 
+  public async findById(id: string): Promise<UserDto> {
+    const user = await this.userRepository.findOneBy({ id });
+
+    if (!user) throw new NotFoundException();
+
+    return plainToInstance(UserDto, user);
+  }
+
   private async validateUserPassword(
     email: string,
     password: string,
