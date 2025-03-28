@@ -5,6 +5,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { typeormConfig } from './config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { jwtConfig } from './config/jwt.config';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      load: [typeormConfig],
+      load: [typeormConfig, jwtConfig],
     }),
     TypeOrmModule.forRootAsync({
       inject: [typeormConfig.KEY],
