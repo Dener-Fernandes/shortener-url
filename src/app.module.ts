@@ -6,10 +6,10 @@ import { ConfigModule, ConfigType } from '@nestjs/config';
 import { typeormConfig } from './config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { jwtConfig } from './config/jwt.config';
+import { UrlModule } from './modules/url/url.module';
 
 @Module({
   imports: [
-    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -19,6 +19,8 @@ import { jwtConfig } from './config/jwt.config';
       inject: [typeormConfig.KEY],
       useFactory: async (config: ConfigType<typeof typeormConfig>) => config,
     }),
+    AuthModule,
+    UrlModule,
   ],
   controllers: [AppController],
   providers: [AppService],
