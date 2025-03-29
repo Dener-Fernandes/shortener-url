@@ -4,7 +4,6 @@ import {
   EventSubscriber,
   FindOperator,
   InsertEvent,
-  Not,
   UpdateEvent,
 } from 'typeorm';
 import { User } from './user.entity';
@@ -18,24 +17,26 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
   }
 
   async beforeInsert(event: InsertEvent<User>) {
-    await this._checkEmailUniqueness(event);
-    await this._hashInsertedPassword(event);
+    await this.checkEmailUniqueness(event);
+    await this.hashInsertedPassword(event);
   }
 
-  async _hashPassword(user: User) {
+  private async hashPassword(user: User) {
     user.salt = await CryptUtil.generateSalt();
     user.password = await CryptUtil.hashPassword(user.password, user.salt);
   }
 
-  async _hashInsertedPassword(event: InsertEvent<User>) {
+  private async hashInsertedPassword(event: InsertEvent<User>) {
     const user = event.entity;
 
-    await this._hashPassword(user);
+    await this.hashPassword(user);
 
     return;
   }
 
-  async _checkEmailUniqueness(event: InsertEvent<User> | UpdateEvent<User>) {
+  private async checkEmailUniqueness(
+    event: InsertEvent<User> | UpdateEvent<User>,
+  ) {
     const user = event.entity;
 
     if (user?.email) {
