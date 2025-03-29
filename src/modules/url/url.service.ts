@@ -23,7 +23,6 @@ export class UrlService {
     hash = hash.substring(0, 6);
 
     const shortUrl = `http://localhost/${hash}`;
-
     const isShortUrlFound = await this.findShortUrl(shortUrl);
 
     if (isShortUrlFound)
@@ -41,7 +40,10 @@ export class UrlService {
   }
 
   async findShortUrl(shortUrl: string): Promise<Url | null> {
-    const isShortUrlFound = await this.urlRepository.findOneBy({ shortUrl });
+    const isShortUrlFound = await this.urlRepository.findOneBy({
+      shortUrl,
+      deletedAt: undefined,
+    });
 
     if (!isShortUrlFound) return null;
 
@@ -49,7 +51,10 @@ export class UrlService {
   }
 
   async findAll(user: UserDto): Promise<Url[]> {
-    const urls = await this.urlRepository.find({ where: { userId: user.id } });
+    let urls = await this.urlRepository.find({ where: { userId: user.id } });
+
+    if (urls.length > 0)
+      urls = urls.filter((url: Url) => url.deletedAt === null);
 
     return urls;
   }
