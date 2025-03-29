@@ -17,16 +17,8 @@ export class UrlService {
     @InjectRepository(Url) private readonly urlRepository: Repository<Url>,
   ) {}
 
-  async shortenUrl(url: string, user?: UserDto): Promise<UrlDto> {
-    let hash = crypto.createHash('md5').update(url).digest('base64url');
-
-    hash = hash.substring(0, 6);
-
-    const shortUrl = `http://localhost/${hash}`;
-    const isShortUrlFound = await this.findShortUrl(shortUrl);
-
-    if (isShortUrlFound)
-      throw new BadRequestException('cannot shorten this url');
+  async create(url: string, user?: UserDto): Promise<UrlDto> {
+    const shortUrl = this.shortenUrl(url);
 
     const tempUrl = this.urlRepository.create({
       originalUrl: url,
@@ -37,17 +29,6 @@ export class UrlService {
     const dbUrl = await this.urlRepository.save(tempUrl);
 
     return plainToInstance(UrlDto, dbUrl);
-  }
-
-  async findShortUrl(shortUrl: string): Promise<Url | null> {
-    const isShortUrlFound = await this.urlRepository.findOneBy({
-      shortUrl,
-      deletedAt: IsNull(),
-    });
-
-    if (!isShortUrlFound) return null;
-
-    return isShortUrlFound;
   }
 
   async findAll(user: UserDto): Promise<UrlDto[]> {
@@ -62,7 +43,10 @@ export class UrlService {
   async update(id: string, url: string, user: UserDto): Promise<UrlDto> {
     const dbUrl = await this.findById(id, user);
 
+    const shortUrl = this.shortenUrl(url);
+
     dbUrl.originalUrl = url;
+    dbUrl.shortUrl = shortUrl;
     dbUrl.updatedAt = new Date();
 
     await this.urlRepository.update(id, dbUrl);
@@ -75,7 +59,7 @@ export class UrlService {
 
     url.deletedAt = new Date();
 
-    await this.urlRepository.save(url);
+    await this.urlRepository.update(id, url);
   }
 
   async getOriginalUrlAndIncrementAccessCount(
@@ -105,5 +89,13 @@ export class UrlService {
     }
 
     return url;
+  }
+
+  private shortenUrl(url: string): string {
+    let hash = crypto.createHash('md5').update(url).digest('base64url');
+
+    hash = hash.substring(0, 6);
+
+    return `http://localhost/${hash}`;
   }
 }

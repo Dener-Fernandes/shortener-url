@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Patch,
   Post,
@@ -23,7 +24,7 @@ export class UrlController {
   @UseGuards(OptionalJwtAuthGuard)
   @Post('shorten')
   async shortenUrl(@Body('url') url: string, @AuthUser() user: UserDto) {
-    return await this.urlService.shortenUrl(url, user);
+    return await this.urlService.create(url, user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -44,6 +45,7 @@ export class UrlController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @HttpCode(204)
   async delete(@Param('id') id: string, @AuthUser() user: UserDto) {
     await this.urlService.delete(id, user);
   }

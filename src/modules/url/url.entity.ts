@@ -3,7 +3,6 @@ import { UrlInterface } from './interfaces/url.interface';
 import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { User } from '../auth/user.entity';
 
-@Unique(['shortUrl'])
 @Entity()
 export class Url extends CommonEntity implements UrlInterface {
   @Column({ type: 'citext', nullable: false })

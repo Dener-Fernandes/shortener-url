@@ -4,10 +4,9 @@ import { UserInterface } from './interfaces/user.interface';
 import { Url } from '../url/url.entity';
 
 @Entity()
-@Unique(['userName'])
 @Unique(['email'])
 export class User extends CommonEntity implements UserInterface {
-  @Column({ type: 'citext' })
+  @Column({ type: 'citext', nullable: false })
   email: string;
 
   @Column({ type: 'citext', nullable: false })
