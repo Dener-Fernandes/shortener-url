@@ -43,4 +43,10 @@ export class UrlService {
 
     return isShortUrlFound;
   }
+
+  async findAll(user: UserDto): Promise<Url[]> {
+    const urls = await this.urlRepository.find({ where: { userId: user.id } });
+
+    return urls;
+  }
 }
