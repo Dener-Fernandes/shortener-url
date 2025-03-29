@@ -21,11 +21,11 @@ If you prefer to run the application manually, you will need the following tools
 
    - `https://github.com/Dener-Fernandes/shortener-url`.
 
-2. Install dependencies:
+2. Install dependencies (do this step only if you are going to run the application manually):
 
    - `npm install`.
 
-3. Add environment variables:
+3. Add environment variables (do this step only if you are going to run the application manually):
 
    - Create a `.env` file following the format of the `.env.example` file. Add the information according to the variable names.
 
@@ -33,7 +33,7 @@ If you prefer to run the application manually, you will need the following tools
 
    - Create a `docker-compose.yml` file following the format of the `docker-compose.example.yml` file. 
 
-5. Create a database (only if you are going to run the application manually):
+5. Create a database (do this step only if you are going to run the application manually):
 
    - `docker-compose up postgres`.
 
@@ -41,6 +41,6 @@ If you prefer to run the application manually, you will need the following tools
 
    - `docker-compose up`.
 
-7. Run the application manually (you do not need to do step 6 if you run the application manually):
+7. Run the application manually (do this step only if you are going to run the application manually):
 
    - `npm run start:dev`.
