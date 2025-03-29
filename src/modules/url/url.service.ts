@@ -60,6 +60,14 @@ export class UrlService {
   }
 
   async delete(id: string, user: UserDto): Promise<void> {
+    const url = await this.findById(id, user);
+
+    url.deletedAt = new Date();
+
+    await this.urlRepository.save(url);
+  }
+
+  private async findById(id: string, user: UserDto): Promise<Url> {
     const url = await this.urlRepository.findOne({
       where: { id, userId: user.id, deletedAt: undefined },
     });
@@ -68,7 +76,6 @@ export class UrlService {
       throw new NotFoundException('url not found or already deleted');
     }
 
-    url.deletedAt = new Date();
-    await this.urlRepository.save(url);
+    return url;
   }
 }
