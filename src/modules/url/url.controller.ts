@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -27,6 +28,16 @@ export class UrlController {
   @Get()
   async findAll(@AuthUser() user: UserDto) {
     return await this.urlService.findAll(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body('url') url: string,
+    @AuthUser() user: UserDto,
+  ) {
+    return await this.urlService.update(id, url, user);
   }
 
   @UseGuards(JwtAuthGuard)

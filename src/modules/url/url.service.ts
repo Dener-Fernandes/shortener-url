@@ -67,6 +67,17 @@ export class UrlService {
     await this.urlRepository.save(url);
   }
 
+  async update(id: string, url: string, user: UserDto): Promise<UrlDto> {
+    const dbUrl = await this.findById(id, user);
+
+    dbUrl.originalUrl = url;
+    dbUrl.updatedAt = new Date();
+
+    await this.urlRepository.update(id, dbUrl);
+
+    return plainToInstance(UrlDto, dbUrl);
+  }
+
   private async findById(id: string, user: UserDto): Promise<Url> {
     const url = await this.urlRepository.findOne({
       where: { id, userId: user.id, deletedAt: undefined },
