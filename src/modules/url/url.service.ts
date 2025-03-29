@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { Url } from './url.entity';
 import { Repository } from 'typeorm';
@@ -13,13 +13,18 @@ export class UrlService {
     @InjectRepository(Url) private readonly urlRepository: Repository<Url>,
   ) {}
 
-  async shortenUrl(url: string, user?: UserDto) {
+  async shortenUrl(url: string, user?: UserDto): Promise<UrlDto> {
     let hash = crypto.createHash('md5').update(url).digest('base64url');
 
     hash = hash.substring(0, 6);
 
     const shortUrl = `http://localhost/${hash}`;
-    console.log(shortUrl);
+
+    const isShortUrlFound = await this.findShortUrl(shortUrl);
+
+    if (isShortUrlFound)
+      throw new BadRequestException('cannot shorten this url');
+
     const tempUrl = this.urlRepository.create({
       originalUrl: url,
       shortUrl: shortUrl,
@@ -29,5 +34,13 @@ export class UrlService {
     const dbUrl = await this.urlRepository.save(tempUrl);
 
     return plainToInstance(UrlDto, dbUrl);
+  }
+
+  async findShortUrl(shortUrl: string): Promise<Url | null> {
+    const isShortUrlFound = await this.urlRepository.findOneBy({ shortUrl });
+
+    if (!isShortUrlFound) return null;
+
+    return isShortUrlFound;
   }
 }
