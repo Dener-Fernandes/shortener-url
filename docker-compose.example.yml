@@ -3,27 +3,27 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
-    container_name: shortener-url-postgres-container
+    container_name: example-postgres-container
     restart: always
     environment:
-      POSTGRES_USER: shortener_url_user
-      POSTGRES_PASSWORD: shortener_url_password
-      POSTGRES_DB: shortener_url_database
+      POSTGRES_USER: example_user
+      POSTGRES_PASSWORD: example_password
+      POSTGRES_DB: example_database
     ports:
       - '5432:5432'
 
   app:
     build: .
-    container_name: shortener-url-app-container
+    container_name: example-app-container
     restart: always
     depends_on:
       - postgres
     environment:
       PORT: 3000
-      DATABASE_URL: postgresql://shortener_url_user:shortener_url_password@postgres:5432/shortener_url_database
+      DATABASE_URL: postgresql://example_user:example_password@postgres:5432/example_database
       DATABASE_MIGRATIONS_RUN: 'true'
       DATABASE_SYNCHRONIZE: 'true'
-      JWT_SECRET: 'Do you know the terror of he who falls asleep?'
+      JWT_SECRET: 'example_secret_key'
       JWT_ACCESS_EXPIRES: 1h
       JWT_REFRESH_EXPIRES: 1h
     ports:
