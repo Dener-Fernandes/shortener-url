@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import * as crypto from 'crypto';
 import { Url } from './url.entity';
 import { Repository } from 'typeorm';
@@ -48,5 +52,18 @@ export class UrlService {
     const urls = await this.urlRepository.find({ where: { userId: user.id } });
 
     return urls;
+  }
+
+  async delete(id: string, user: UserDto): Promise<void> {
+    const url = await this.urlRepository.findOne({
+      where: { id, userId: user.id, deletedAt: undefined },
+    });
+
+    if (!url) {
+      throw new NotFoundException('url not found or already deleted');
+    }
+
+    url.deletedAt = new Date();
+    await this.urlRepository.save(url);
   }
 }

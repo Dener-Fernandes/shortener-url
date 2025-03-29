@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { UrlService } from './url.service';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
@@ -19,5 +27,11 @@ export class UrlController {
   @Get()
   async findAll(@AuthUser() user: UserDto) {
     return await this.urlService.findAll(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async delete(@Param('id') id: string, @AuthUser() user: UserDto) {
+    await this.urlService.delete(id, user);
   }
 }
