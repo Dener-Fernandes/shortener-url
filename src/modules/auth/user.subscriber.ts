@@ -4,7 +4,6 @@ import {
   EventSubscriber,
   FindOperator,
   InsertEvent,
-  Not,
   UpdateEvent,
 } from 'typeorm';
 import { User } from './user.entity';
