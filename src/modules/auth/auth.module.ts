@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import { ConfigType } from '@nestjs/config';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { OptionalJwtStrategy } from './optional-jwt.strategy';
+import { UrlModule } from '../url/url.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { OptionalJwtStrategy } from './optional-jwt.strategy';
       inject: [jwtConfig.KEY],
       useFactory: async (config: ConfigType<typeof jwtConfig>) => config,
     }),
+    forwardRef(() => UrlModule),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, OptionalJwtStrategy],
