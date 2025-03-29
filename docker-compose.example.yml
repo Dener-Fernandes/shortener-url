@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: example-postgres-container
+    restart: always
+    environment:
+      POSTGRES_USER: example_user
+      POSTGRES_PASSWORD: example_password
+      POSTGRES_DB: example_database
+    ports:
+      - '5432:5432'
+
+  app:
+    build: .
+    container_name: example-app-container
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://example_user:example_password@postgres:5432/example_database
+      DATABASE_MIGRATIONS_RUN: 'true'
+      DATABASE_SYNCHRONIZE: 'true'
+      JWT_SECRET: 'example_secret_key'
+      JWT_ACCESS_EXPIRES: 1h
+      JWT_REFRESH_EXPIRES: 1h
+    ports:
+      - '3000:3000'
+    command: npm run start
