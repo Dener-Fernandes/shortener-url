@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { Url } from './url.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from '../auth/dtos/user.dto';
 import { plainToInstance } from 'class-transformer';
@@ -42,7 +42,7 @@ export class UrlService {
   async findShortUrl(shortUrl: string): Promise<Url | null> {
     const isShortUrlFound = await this.urlRepository.findOneBy({
       shortUrl,
-      deletedAt: undefined,
+      deletedAt: IsNull(),
     });
 
     if (!isShortUrlFound) return null;
@@ -59,14 +59,6 @@ export class UrlService {
     return plainToInstance(UrlDto, urls);
   }
 
-  async delete(id: string, user: UserDto): Promise<void> {
-    const url = await this.findById(id, user);
-
-    url.deletedAt = new Date();
-
-    await this.urlRepository.save(url);
-  }
-
   async update(id: string, url: string, user: UserDto): Promise<UrlDto> {
     const dbUrl = await this.findById(id, user);
 
@@ -78,9 +70,34 @@ export class UrlService {
     return plainToInstance(UrlDto, dbUrl);
   }
 
+  async delete(id: string, user: UserDto): Promise<void> {
+    const url = await this.findById(id, user);
+
+    url.deletedAt = new Date();
+
+    await this.urlRepository.save(url);
+  }
+
+  async getOriginalUrlAndIncrementAccessCount(
+    shortUrl: string,
+  ): Promise<string> {
+    shortUrl = `http://localhost/${shortUrl}`;
+
+    const url = await this.urlRepository.findOne({
+      where: { shortUrl, deletedAt: IsNull() },
+    });
+
+    if (!url) throw new NotFoundException('url not found');
+
+    url.accessCount += 1;
+    await this.urlRepository.save(url);
+
+    return url.originalUrl;
+  }
+
   private async findById(id: string, user: UserDto): Promise<Url> {
     const url = await this.urlRepository.findOne({
-      where: { id, userId: user.id, deletedAt: undefined },
+      where: { id, userId: user.id, deletedAt: IsNull() },
     });
 
     if (!url) {

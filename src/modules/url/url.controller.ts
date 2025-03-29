@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { UrlService } from './url.service';
@@ -13,6 +14,7 @@ import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { UserDto } from '../auth/dtos/user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Response } from 'express';
 
 @Controller('url')
 export class UrlController {
@@ -44,5 +46,16 @@ export class UrlController {
   @Delete(':id')
   async delete(@Param('id') id: string, @AuthUser() user: UserDto) {
     await this.urlService.delete(id, user);
+  }
+
+  @Get(':shortUrl')
+  async redirectToOriginalUrl(
+    @Param('shortUrl') shortUrl: string,
+    @Res() res: Response,
+  ) {
+    const originalUrl =
+      await this.urlService.getOriginalUrlAndIncrementAccessCount(shortUrl);
+
+    return res.redirect(302, originalUrl);
   }
 }
