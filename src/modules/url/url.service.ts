@@ -50,13 +50,13 @@ export class UrlService {
     return isShortUrlFound;
   }
 
-  async findAll(user: UserDto): Promise<Url[]> {
+  async findAll(user: UserDto): Promise<UrlDto[]> {
     let urls = await this.urlRepository.find({ where: { userId: user.id } });
 
     if (urls.length > 0)
       urls = urls.filter((url: Url) => url.deletedAt === null);
 
-    return urls;
+    return plainToInstance(UrlDto, urls);
   }
 
   async delete(id: string, user: UserDto): Promise<void> {

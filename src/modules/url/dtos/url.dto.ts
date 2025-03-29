@@ -5,23 +5,16 @@ import { UserDto } from 'src/modules/auth/dtos/user.dto';
 
 @Exclude()
 export class UrlDto extends CommonEntityDto implements UrlInterface {
-  @Exclude()
-  declare id: string;
-
-  @Exclude()
-  declare createdAt: Date;
-
-  @Exclude()
-  declare updatedAt: Date;
-
   @Expose()
   originalUrl: string;
 
   @Expose()
   shortUrl: string;
 
+  @Expose()
   accessCount: number;
 
+  @Expose()
   deletedAt: Date | null;
 
   userId: string | null;
