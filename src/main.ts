@@ -10,7 +10,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix('shortener-url');
 
-  await swagger(app, 'development');
+  await swagger(app, process.env.ENVIRONMENT!);
 
   await app.listen(process.env.PORT ?? 3000);
 }
