@@ -22,5 +22,5 @@ export class User extends CommonEntity implements UserInterface {
   active: boolean;
 
   @OneToMany(() => Url, (url) => url.user, { cascade: true })
-  urls: Url[];
+  urls?: Url[];
 }

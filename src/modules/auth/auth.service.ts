@@ -62,7 +62,7 @@ export class AuthService {
     return plainToInstance(UserDto, user);
   }
 
-  private async validateUserPassword(
+  public async validateUserPassword(
     email: string,
     password: string,
   ): Promise<UserDto | null> {
