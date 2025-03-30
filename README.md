@@ -42,16 +42,20 @@ If you prefer to run the application manually, you will need the following tools
 
    - Create a `.env` file following the format of the `.env.example` file. Add the information according to the variable names.
 
-4. Create a database:
+4. Add docker-compose.yml to run the database:
+
+   - Create a `docker-compose.yml` file following the format of the `docker-compose.example.yml` file, but adding only the configuration for database.
+
+5. Create a database:
 
    - `docker-compose up postgres`.
 
-5. Run the application manually:
+6. Run the application manually:
 
    - `npm run start:dev`.
 
 ### How to access Swagger
 
-6. Access swagger documentation:
+7. Access swagger documentation:
 
    - Use the url: `localhost:3000/shortener-url/api-docs`.
