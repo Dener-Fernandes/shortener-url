@@ -6,9 +6,9 @@ import { User } from './user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConfig } from 'src/config/jwt.config';
 import { ConfigType } from '@nestjs/config';
-import { LocalStrategy } from './local.strategy';
-import { JwtStrategy } from './jwt.strategy';
-import { OptionalJwtStrategy } from './optional-jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { OptionalJwtStrategy } from './strategies/optional-jwt.strategy';
 import { UrlModule } from '../url/url.module';
 
 @Module({
