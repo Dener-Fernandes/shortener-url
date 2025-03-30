@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from '../auth/dtos/user.dto';
 import { plainToInstance } from 'class-transformer';
 import { UrlDto } from './dtos/url.dto';
+import { URL_NOT_FOUND_OR_ALREADY_DELETED } from 'src/common/utils/constants';
 
 @Injectable()
 export class UrlService {
@@ -71,7 +72,7 @@ export class UrlService {
       where: { shortUrl, deletedAt: IsNull() },
     });
 
-    if (!url) throw new NotFoundException('url not found or already deleted');
+    if (!url) throw new NotFoundException(URL_NOT_FOUND_OR_ALREADY_DELETED);
 
     url.accessCount += 1;
     await this.urlRepository.save(url);
@@ -85,7 +86,7 @@ export class UrlService {
     });
 
     if (!url) {
-      throw new NotFoundException('url not found or already deleted');
+      throw new NotFoundException(URL_NOT_FOUND_OR_ALREADY_DELETED);
     }
 
     return url;

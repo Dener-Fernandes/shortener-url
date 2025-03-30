@@ -1,5 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { URL_NOT_FOUND_OR_ALREADY_DELETED } from 'src/common/utils/constants';
 
 export function ApiDeleteUrl() {
   return applyDecorators(
@@ -29,7 +30,7 @@ export function ApiDeleteUrl() {
       content: {
         'application/json': {
           example: {
-            message: 'url not found or already deleted',
+            message: URL_NOT_FOUND_OR_ALREADY_DELETED,
             error: 'Not Found',
             statusCode: 404,
           },

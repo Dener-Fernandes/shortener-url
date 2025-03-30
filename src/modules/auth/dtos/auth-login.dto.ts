@@ -7,6 +7,7 @@ export class AuthLoginDto {
     example: 'dener.oliveira@gmail.com',
   })
   @IsEmail()
+  @IsString()
   email: string;
 
   @ApiProperty({
