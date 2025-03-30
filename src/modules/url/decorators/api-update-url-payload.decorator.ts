@@ -3,6 +3,7 @@ import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UrlPayloadDto } from '../dtos/url-payload.dto';
 import { UrlDto } from '../dtos/url.dto';
 import {
+  INVALID_UUID_PARAMETER,
   THIS_URL_IS_ALREADY_TAKEN_BY_ANOTHER_USER,
   URL_NOT_FOUND_OR_ALREADY_DELETED,
 } from 'src/common/utils/constants';
@@ -31,6 +32,7 @@ export function ApiUpdateUrlPayload() {
             message: [
               'url must be a string',
               THIS_URL_IS_ALREADY_TAKEN_BY_ANOTHER_USER,
+              INVALID_UUID_PARAMETER,
             ],
             error: 'Bad Request',
             statusCode: 400,
