@@ -20,5 +20,5 @@ export class UserDto
 
   @Expose()
   @Type(() => UrlDto)
-  urls: UrlDto[];
+  urls?: UrlDto[];
 }
