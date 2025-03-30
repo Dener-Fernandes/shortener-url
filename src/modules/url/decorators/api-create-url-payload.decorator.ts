@@ -2,6 +2,7 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UrlPayloadDto } from '../dtos/url-payload.dto';
 import { UrlDto } from '../dtos/url.dto';
+import { THIS_URL_HAS_ALREADY_BEEN_SHORTENED } from 'src/common/utils/constants';
 
 export function ApiCreateUrlPayload() {
   return applyDecorators(
@@ -26,7 +27,7 @@ export function ApiCreateUrlPayload() {
           example: {
             message: [
               'url must be a string',
-              'this url has already been shortened',
+              THIS_URL_HAS_ALREADY_BEEN_SHORTENED,
             ],
             error: 'Bad Request',
             statusCode: 400,

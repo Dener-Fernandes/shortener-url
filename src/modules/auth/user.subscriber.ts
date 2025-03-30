@@ -9,6 +9,7 @@ import {
 import { User } from './user.entity';
 import { CryptUtil } from 'src/common/utils/crypt.util';
 import { BadRequestException } from '@nestjs/common';
+import { EMAIL_ADDRESS_ALREADY_EXISTS } from 'src/common/utils/constants';
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<User> {
@@ -53,7 +54,7 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
       const count = await event.manager.count(User, criteria);
 
       if (count > 0) {
-        throw new BadRequestException('email address already exists');
+        throw new BadRequestException(EMAIL_ADDRESS_ALREADY_EXISTS);
       } else {
         return;
       }

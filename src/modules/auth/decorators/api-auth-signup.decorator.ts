@@ -2,6 +2,7 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthResponseDto } from '../dtos/auth-response.dto';
 import { AuthSignUpDto } from '../dtos/auth-signup.dto';
+import { EMAIL_ADDRESS_ALREADY_EXISTS } from 'src/common/utils/constants';
 
 export function ApiAuthSignUp() {
   return applyDecorators(
@@ -29,6 +30,7 @@ export function ApiAuthSignUp() {
               'email must be an email',
               'email must be a string',
               'password must be a string',
+              EMAIL_ADDRESS_ALREADY_EXISTS,
             ],
             error: 'Bad Request',
             statusCode: 400,

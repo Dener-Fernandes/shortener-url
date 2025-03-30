@@ -2,6 +2,10 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UrlPayloadDto } from '../dtos/url-payload.dto';
 import { UrlDto } from '../dtos/url.dto';
+import {
+  THIS_URL_IS_ALREADY_TAKEN_BY_ANOTHER_USER,
+  URL_NOT_FOUND_OR_ALREADY_DELETED,
+} from 'src/common/utils/constants';
 
 export function ApiUpdateUrlPayload() {
   return applyDecorators(
@@ -26,7 +30,7 @@ export function ApiUpdateUrlPayload() {
           example: {
             message: [
               'url must be a string',
-              'this url is already taken by another user',
+              THIS_URL_IS_ALREADY_TAKEN_BY_ANOTHER_USER,
             ],
             error: 'Bad Request',
             statusCode: 400,
@@ -52,7 +56,7 @@ export function ApiUpdateUrlPayload() {
       content: {
         'application/json': {
           example: {
-            message: 'url not found or already deleted',
+            message: URL_NOT_FOUND_OR_ALREADY_DELETED,
             error: 'Not Found',
             statusCode: 404,
           },

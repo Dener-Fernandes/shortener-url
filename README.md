@@ -1,4 +1,3 @@
-
 # Shortener-Url
 
 This application is built using NestJS, a progressive Node.js framework for building efficient, reliable, and scalable server-side applications.
@@ -6,9 +5,11 @@ This application is built using NestJS, a progressive Node.js framework for buil
 ## Tools Required
 
 ### Running with Docker
+
 To run the application using Docker, you will need to have **Docker** or **Rancher** installed on your machine.
 
 ### Running Manually
+
 If you prefer to run the application manually, you will need the following tools:
 
 - **Node.js**
@@ -21,26 +22,36 @@ If you prefer to run the application manually, you will need the following tools
 
    - `https://github.com/Dener-Fernandes/shortener-url`.
 
-2. Install dependencies (do this step only if you are going to run the application manually):
+### How to run with Docker
 
-   - `npm install`.
+2. Add docker-compose.yml:
 
-3. Add environment variables (do this step only if you are going to run the application manually):
+   - Create a `docker-compose.yml` file following the format of the `docker-compose.example.yml` file.
 
-   - Create a `.env` file following the format of the `.env.example` file. Add the information according to the variable names.
-
-4. Add docker-compose.yml:
-
-   - Create a `docker-compose.yml` file following the format of the `docker-compose.example.yml` file. 
-
-5. Create a database (do this step only if you are going to run the application manually):
-
-   - `docker-compose up postgres`.
-
-6. Run the application with Docker (you do not need to do step 7 if you run the application with Docker):
+3. Run the application with Docker:
 
    - `docker-compose up`.
 
-7. Run the application manually (do this step only if you are going to run the application manually):
+### How to run Manually
+
+2. Install dependencies:
+
+   - `npm install`.
+
+3. Add environment variables:
+
+   - Create a `.env` file following the format of the `.env.example` file. Add the information according to the variable names.
+
+4. Create a database:
+
+   - `docker-compose up postgres`.
+
+5. Run the application manually:
 
    - `npm run start:dev`.
+
+### How to access Swagger
+
+6. Access swagger documentation:
+
+   - Use the url: `localhost:3000/shortener-url/api-docs`.

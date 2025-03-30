@@ -9,6 +9,10 @@ import {
 } from 'typeorm';
 import { Url } from './url.entity';
 import { BadRequestException } from '@nestjs/common';
+import {
+  THIS_URL_HAS_ALREADY_BEEN_SHORTENED,
+  THIS_URL_IS_ALREADY_TAKEN_BY_ANOTHER_USER,
+} from 'src/common/utils/constants';
 
 @EventSubscriber()
 export class UrlSubscriber implements EntitySubscriberInterface<Url> {
@@ -44,7 +48,7 @@ export class UrlSubscriber implements EntitySubscriberInterface<Url> {
       });
 
       if (existingUrl) {
-        throw new BadRequestException('this url has already been shortened');
+        throw new BadRequestException(THIS_URL_HAS_ALREADY_BEEN_SHORTENED);
       }
     }
 
@@ -59,7 +63,7 @@ export class UrlSubscriber implements EntitySubscriberInterface<Url> {
 
       if (duplicateUrl) {
         throw new BadRequestException(
-          'this url is already taken by another user',
+          THIS_URL_IS_ALREADY_TAKEN_BY_ANOTHER_USER,
         );
       }
     }
