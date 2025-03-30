@@ -71,7 +71,7 @@ export class UrlService {
       where: { shortUrl, deletedAt: IsNull() },
     });
 
-    if (!url) throw new NotFoundException('url not found');
+    if (!url) throw new NotFoundException('url not found or already deleted');
 
     url.accessCount += 1;
     await this.urlRepository.save(url);
