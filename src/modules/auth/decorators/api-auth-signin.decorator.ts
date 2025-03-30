@@ -1,16 +1,16 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { AuthLoginDto } from '../dtos/auth-login.dto';
+import { AuthSignInDto } from '../dtos/auth-signin.dto';
 import { AuthResponseDto } from '../dtos/auth-response.dto';
 
-export function ApiAuthLogin() {
+export function ApiAuthSignIn() {
   return applyDecorators(
     ApiBody({
-      type: AuthLoginDto,
+      type: AuthSignInDto,
       description: 'Payload to be sent',
     }),
     ApiOperation({
-      operationId: 'apiAuth',
+      operationId: 'apiAuthSignIn',
       description: 'It authenticates user',
     }),
     ApiResponse({
