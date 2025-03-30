@@ -19,6 +19,7 @@ services:
     depends_on:
       - postgres
     environment:
+      ENVIRONMENT: development
       PORT: 3000
       DATABASE_URL: postgresql://example_user:example_password@postgres:5432/example_database
       DATABASE_MIGRATIONS_RUN: 'true'
