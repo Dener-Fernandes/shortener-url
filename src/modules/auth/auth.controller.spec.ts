@@ -153,7 +153,7 @@ describe('AuthLoginDto', () => {
   it('should return an error if the password is empty', async () => {
     const dto = new AuthLoginDto();
     dto.email = 'dener.oliveira@gmail.com';
-    dto.password = ''; // Empty password
+    dto.password = undefined as any; // Empty password
 
     const errors = await validate(dto);
     expect(errors.length).toBe(1);
