@@ -1,6 +1,9 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { URL_NOT_FOUND_OR_ALREADY_DELETED } from 'src/common/utils/constants';
+import {
+  INVALID_UUID_PARAMETER,
+  URL_NOT_FOUND_OR_ALREADY_DELETED,
+} from 'src/common/utils/constants';
 
 export function ApiDeleteUrl() {
   return applyDecorators(
@@ -11,6 +14,19 @@ export function ApiDeleteUrl() {
     ApiResponse({
       status: 204,
       description: 'No Content',
+    }),
+    ApiResponse({
+      status: 400,
+      description: 'Bad Request',
+      content: {
+        'application/json': {
+          example: {
+            message: [INVALID_UUID_PARAMETER],
+            error: 'Bad Request',
+            statusCode: 400,
+          },
+        },
+      },
     }),
     ApiResponse({
       status: 401,
