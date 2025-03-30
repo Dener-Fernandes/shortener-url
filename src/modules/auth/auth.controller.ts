@@ -6,6 +6,7 @@ import { UserDto } from './dtos/user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { ApiAuthSignUp } from './decorators/api-auth-signup.decorator';
 import { ApiAuthLogin } from './decorators/api-auth-login.decorator';
+import { ValidateLoginGuard } from './guards/validate-login.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -18,7 +19,7 @@ export class AuthController {
   }
 
   @ApiAuthLogin()
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(ValidateLoginGuard, LocalAuthGuard)
   @Post('login')
   async signIn(@AuthUser() user: UserDto) {
     return await this.authService.jwtSign(user);
