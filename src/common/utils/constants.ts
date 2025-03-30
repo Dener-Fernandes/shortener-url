@@ -8,3 +8,5 @@ export const THIS_URL_HAS_ALREADY_BEEN_SHORTENED =
 
 export const THIS_URL_IS_ALREADY_TAKEN_BY_ANOTHER_USER =
   'this url is already taken by another user';
+
+export const INVALID_UUID_PARAMETER = 'invalid UUID parameter';
