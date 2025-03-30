@@ -6,16 +6,16 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
-import { AuthLoginDto } from '../dtos/auth-login.dto';
+import { AuthSignInDto } from '../dtos/auth-signin.dto';
 
 @Injectable()
-export class ValidateLoginGuard implements CanActivate {
+export class ValidateSignInGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
     const body = request.body ?? {};
 
-    const authLoginDto = plainToInstance(AuthLoginDto, body);
+    const authLoginDto = plainToInstance(AuthSignInDto, body);
     const errors = await validate(authLoginDto);
 
     if (errors.length > 0) {
